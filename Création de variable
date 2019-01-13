@@ -1,0 +1,29 @@
+#Création de variables
+
+#Variables amures
+#Tack
+df['Tack'] = np.where(df['Apparent_Wind_Angle']<0,'Port','Starboard')
+#Foil
+df['Foil'] = np.where(df['Apparent_Wind_Angle']<0,df['Starboard_Foil_Max_Deformation_in_4'],df['Port_Foil_Max_Deformation_in_4'])
+#Foil_rake
+df['Foil_Rake'] = np.where(df['Apparent_Wind_Angle']<0,df['Starboard_Foil_Max_Deformation_in_4'],df['Port_Foil_Max_Deformation_in_4'])
+#Rudder Angle
+df['Rudder_Angle'] = np.where(df['Apparent_Wind_Angle']<0,df['Rudder_Angle_Starboard'],df['Rudder_Angle_Port'])
+#Rudder_elevator
+df['Rudder_Elevator'] = np.where(df['Apparent_Wind_Angle']<0,df['Rudder_Elevator_Angle_Starboard'],df['Rudder_Elevator_Angle_Port'])
+#Rudder_Load_I
+df['Rudder_Load_I'] = np.where(df['Apparent_Wind_Angle']<0,df['Rudder_Inside_Load_Starboard'],df['Rudder_Inside_Load_Port'])
+#Rudder_Load_o
+df['Rudder_Load_o'] = np.where(df['Apparent_Wind_Angle']<0,df['Rudder_Outside_Load_Starboard'],df['Rudder_Outside_Load_Port'])
+#Shroud
+df['Shroud'] = np.where(df['Apparent_Wind_Angle']<0,df['Shroud_Load_Starboard'],df['Shroud_Load_Port'])
+
+#Variables portance
+#Front_rake
+df['Front_Rake'] = df['Foil_Rake'] + df['Board_Elevator_Angle_Center']
+#Aft_rake
+df['Aft_Rake'] = df['Rudder_Elevator'] + df['Rudder_Elevator_Angle_Center']
+#Leeward_rake
+df['Leeward_Rake'] = df['Foil_Rake'] + df['Rudder_Elevator']
+#Center_rake
+df['Center_rake'] = df['Rudder_Elevator_Angle_Center'] + df['Rudder_Elevator']
