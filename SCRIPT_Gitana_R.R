@@ -142,7 +142,7 @@ myplot <- ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
 print(myplot)
 
 ####################### ACP #######################
-etude.pca <- PCA(data_4, graph = FALSE, ncp = 3)
+etude.pca <- PCA(data_tribord, graph = FALSE, ncp = 3)
 print(etude.pca)
 
 ##### Analyse des valeurs propres #####
@@ -182,3 +182,61 @@ fviz_pca_var(etude.pca, col.var = "cos2",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE # Évite le chevauchement de texte
 )
+
+
+#graphique des variables
+
+var <- get_pca_var(etude.pca)
+var
+
+# Coordonnées
+head(var$coord)
+# Cos2: qualité de répresentation
+head(var$cos2)
+# Contributions aux composantes principales
+head(var$contrib)
+
+#Qualité de la représentation
+
+fviz_cos2(etude.pca, choice = "var", axes = 1:3)
+fviz_cos2(etude.pca, choice = "var", axes = 1)
+fviz_cos2(etude.pca, choice = "var", axes = 2)
+fviz_cos2(etude.pca, choice = "var", axes = 3)
+
+#Contribution des variables aux axes principaux
+
+library("corrplot")
+corrplot(var$contrib, is.corr=FALSE)
+
+# Contributions des variables à PC1
+
+fviz_contrib(etude.pca, choice = "var", axes = 1)
+
+# Contributions des variables à PC2
+
+fviz_contrib(etude.pca, choice = "var", axes = 2)
+
+# Contributions des variables à PC3
+
+fviz_contrib(etude.pca, choice = "var", axes = 3)
+
+# Contribution totale à PC1,PC2,PC3
+
+fviz_contrib(etude.pca, choice = "var", axes = 1:3)
+
+fviz_pca_var(etude.pca, alpha.var = "contrib")
+
+#DESCRIPTION DES DIMENSIONS
+
+res.desc <- dimdesc(etude.pca, axes = c(1,3), proba = 0.05)
+# Description de la dimension 1
+descri_dim1 = res.desc$Dim.1
+
+#Top 20 des individus/variables les plus contibutifs
+
+fviz_pca_biplot (etude.pca, select.ind = list (contrib = 30),
+                 select.var = list (contrib = 30),
+                 ggtheme = theme_minimal())
+
+# Top 5 variables actives avec le cos2 le plus elevé
+fviz_pca_var (etude.pca, select.var = list(cos2 = 30))
